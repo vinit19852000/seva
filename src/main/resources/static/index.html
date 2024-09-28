@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome Page</title>
+</head>
+<body>
+
+<h1>Welcome!</h1>
+
+<form id="welcomeForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required>
+    <br>
+
+    <label for="item">Item:</label>
+    <input type="text" id="item" name="item" required>
+    <br>
+
+    <button type="submit">Save</button>
+</form>
+
+<script>
+function saveToCookies() {
+    const name = document.getElementById("name").value;
+    const address = document.getElementById("address").value;
+    const item = document.getElementById("item").value;
+
+    document.cookie = `name=${name}`;
+    document.cookie = `address=${address}`;
+    document.cookie = `item=${item}`;
+
+    // Show welcome message with saved data
+    document.getElementById("welcomeForm").style.display = "none";
+    document.getElementById("savedData").innerHTML = `Welcome back, ${name}! Your address is ${address} and your item is ${item}`;
+}
+
+// Check if cookies exist and populate form fields
+function checkCookies() {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        const [key, value] = cookie.split('=');
+
+        if (key === 'name') {
+            document.getElementById("name").value = value;
+        } else if (key === 'address') {
+            document.getElementById("address").value = value;
+        } else if (key === 'item') {
+            document.getElementById("item").value = value;
+        }
+    }
+}
+
+// Check for existing cookies on page load
+window.onload = checkCookies;
+
+// Handle form submission
+document.getElementById("welcomeForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    saveToCookies();
+});
+</script>
+
+<div id="savedData"></div>
+
+</body>
+</html>
